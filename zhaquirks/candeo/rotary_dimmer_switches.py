@@ -2,7 +2,6 @@
 
 from typing import Final
 
-from zigpy.quirks import CustomCluster
 import zigpy.types as t
 from zigpy.zcl import ClusterType
 from zigpy.zcl.clusters.general import Identify, LevelControl, OnOff, Ota
@@ -13,6 +12,7 @@ from zigpy.zcl.foundation import (
     ZCLCommandDef,
 )
 
+from zhaquirks.clusters import CustomCluster
 from zhaquirks.builder import QuirkBuilder
 from zhaquirks.candeo import CANDEO
 from zhaquirks.const import (
@@ -50,8 +50,8 @@ class CandeoRemoteDirection(t.enum8):
 class CandeoRemoteLiteEP2Functionality(t.enum8):
     """Candeo remote lite EP2 functionality enum."""
 
-    disabled = False
-    enabled = True
+    Disabled = 0x00
+    Enabled = 0x01
 
 
 class CandeoOnOffRemoteCluster(OnOff, CustomCluster):
@@ -104,7 +104,7 @@ class CandeoOnOffRemoteLiteEP2FunctionalityCluster(OnOff, CustomCluster):
     class AttributeDefs(OnOff.AttributeDefs):
         """Attribute Definitions."""
 
-        rem_lite_ep2_functionality = ZCLAttributeDef(
+        extra_button_commands = ZCLAttributeDef(
             id=0x8000,
             type=CandeoRemoteLiteEP2Functionality,
             zcl_type=DataTypeId.bool_,
@@ -112,7 +112,7 @@ class CandeoOnOffRemoteLiteEP2FunctionalityCluster(OnOff, CustomCluster):
         )
 
     _VALID_ATTRIBUTES = {
-        AttributeDefs.rem_lite_ep2_functionality.id,
+        AttributeDefs.extra_button_commands.id,
     }
 
 
@@ -152,12 +152,12 @@ remote_lite_quirk = (
         endpoint_id=3,
     )
     .enum(
-        attribute_name=CandeoOnOffRemoteLiteEP2FunctionalityCluster.AttributeDefs.rem_lite_ep2_functionality.name,
+        attribute_name=CandeoOnOffRemoteLiteEP2FunctionalityCluster.AttributeDefs.extra_button_commands.name,
         cluster_id=CandeoOnOffRemoteLiteEP2FunctionalityCluster.cluster_id,
         endpoint_id=1,
-        translation_key="rem_lite_ep2_functionality",
-        fallback_name="Extra button commands",
         enum_class=CandeoRemoteLiteEP2Functionality,
+        translation_key="extra_button_commands",
+        fallback_name="Extra button commands",        
     )
     .device_automation_triggers(
         {
