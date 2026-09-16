@@ -12,9 +12,9 @@ from zigpy.zcl.foundation import (
     ZCLCommandDef,
 )
 
-from zhaquirks.clusters import CustomCluster
 from zhaquirks.builder import QuirkBuilder
 from zhaquirks.candeo import CANDEO
+from zhaquirks.clusters import CustomCluster
 from zhaquirks.const import (
     CLUSTER_ID,
     COMMAND,
@@ -157,7 +157,7 @@ remote_lite_quirk = (
         endpoint_id=1,
         enum_class=CandeoRemoteLiteEP2Functionality,
         translation_key="extra_button_commands",
-        fallback_name="Extra button commands",        
+        fallback_name="Extra button commands",
     )
     .device_automation_triggers(
         {
