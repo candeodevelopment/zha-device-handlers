@@ -109,11 +109,10 @@ class CandeoOnOffRemoteLiteEP2FunctionalityCluster(OnOff, CustomCluster):
             type=CandeoRemoteLiteEP2Functionality,
             zcl_type=DataTypeId.bool_,
             access="rw",
+            # manufacturer specific attribute, but not marked as such in the device
+            manufacturer_code=None,
+            is_manufacturer_specific=False,
         )
-
-    _VALID_ATTRIBUTES = {
-        AttributeDefs.extra_button_commands.id,
-    }
 
 
 class CandeoOnOffRemoteLiteCluster(OnOff, CustomCluster):
@@ -136,7 +135,7 @@ class CandeoOnOffRemoteLiteCluster(OnOff, CustomCluster):
         )
 
 
-remote_lite_quirk = (
+dimmer_v2_quirk = (
     QuirkBuilder()
     .replaces(
         CandeoOnOffRemoteLiteEP2FunctionalityCluster,
@@ -255,7 +254,7 @@ remote_quirk = (
 )
 
 (
-    remote_lite_quirk.clone()
+    dimmer_v2_quirk.clone()
     .applies_to(CANDEO, "C-ZB-RD1Pv2-DIM")
     .removes(Ota.cluster_id)
     .add_to_registry()
